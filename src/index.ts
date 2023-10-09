@@ -8,12 +8,11 @@ import { isCheckBoxProperty, isEmojiProperty, isMultiSelectProperty, isSelectPro
 import { decodeUnicodeEscapeSequence } from "./utils";
 
 type FrontMatterNotionPropMapping = {
-  [key in keyof FrontMatter]: string;
+  [key in keyof Omit<FrontMatter, 'emoji'>]: string;
 }
 
 const defaultMapping: FrontMatterNotionPropMapping = {
   title: 'Title',
-  emoji: 'Emoji',
   type: 'Type',
   topics: 'Topics',
   published: 'Published',
@@ -143,9 +142,10 @@ export default class NotionToZennMarkdown {
     return frontMatterString;
   }
 
-  async generateMd(pageId: string, mappingKeys: FrontMatterNotionPropMapping = defaultMapping): Promise<string> {
+  async generateMd(pageId: string, mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping): Promise<string> {
+    const mapping = { ...defaultMapping, ...mappingKeys };
     const mdString = await this.pageToZennMarkdown(pageId);
-    const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
+    const frontMatter = await this.getFrontMatter(pageId, mapping);
     const zennMarkdown = this._generateMd(mdString, frontMatter);
 
     return zennMarkdown;

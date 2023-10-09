@@ -215,7 +215,24 @@ describe("NotionToZennMarkdown", () => {
               "href": null
             }
           ]
-        }
+        },
+        "CustomType": {
+          "id": "%3D%5BO%3C",
+          "type": "select",
+          "select": { "id": "]ns^", "name": "tech", "color": "blue" }
+        },
+        "CustomPublished": { "id": "H%7BJ%7C", "type": "checkbox", "checkbox": true },
+        "CustomTopics": {
+          "id": "ZzyO",
+          "type": "multi_select",
+          "multi_select": [
+            {
+              "id": "c1e9d580-ae07-4679-a879-4d97c9d7e3e3",
+              "name": "notion",
+              "color": "brown"
+            }
+          ]
+        },
       },
       "url": "https://www.notion.so/99999999999999999999999999999991",
       "public_url": null
@@ -223,12 +240,23 @@ describe("NotionToZennMarkdown", () => {
 
   })
 
-  it('', async () => {
+  it('should generate markdown properly', async () => {
     const n2zm = new NotionToZennMarkdown('sample');
     const md = await n2zm.generateMd('');
 
     expect(md).toMatchSnapshot()
-  }, 60000)
+  }, 60000);
+
+  it('should generate markdown properly even if a mapping key is specified', async () => {
+    const n2zm = new NotionToZennMarkdown('secret_sample');
+    const md = await n2zm.generateMd('page_id', {
+      type: 'CustomType',
+      published: 'CustomPublished',
+      topics: 'CustomTopics'
+    });
+
+    expect(md).toMatchSnapshot()
+  })
 });
 
 
