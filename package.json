@@ -1,8 +1,9 @@
 {
   "name": "notion-to-zenn-md",
   "version": "1.0.0",
-  "description": "notion-to-zenn-md",
-  "main": "index.js",
+  "description": "convert notion pages to Zenn-compatible markdown",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "npm run clean && run-p build:*",
