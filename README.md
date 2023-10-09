@@ -20,3 +20,8 @@ const md = await n2zm.generateMd('notion_page_id');
 console.log(md);
 ```
 
+## License
+
+Copyright (c) Kosuke Kihara. All rights reserved.
+
+Licensed under the MIT License. See [LICENSE](./LICENSE)
