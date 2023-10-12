@@ -7,4 +7,5 @@ export type FrontMatter = {
   type: ArticleType; // Select
   topics: string[]; // Multi Select
   published: boolean; // Checkbox
+  publishedAt?: string; // Date
 };

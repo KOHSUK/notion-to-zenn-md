@@ -233,6 +233,11 @@ describe("NotionToZennMarkdown", () => {
             }
           ]
         },
+        "CustomPublishedAt": {
+          "id": "xxxxxxxx",
+          "type": "date",
+          "date": { "start": "2023-10-01T13:52:00.000Z", "end": null, "time_zone": null }
+        }
       },
       "url": "https://www.notion.so/99999999999999999999999999999991",
       "public_url": null
@@ -244,8 +249,8 @@ describe("NotionToZennMarkdown", () => {
     const n2zm = new NotionToZennMarkdown('sample');
     const md = await n2zm.generateMd('');
 
-    expect(md).toMatchSnapshot()
-  }, 60000);
+    expect(md).toMatchSnapshot();
+  });
 
   it('should generate markdown properly even if a mapping key is specified', async () => {
     const n2zm = new NotionToZennMarkdown('secret_sample');
@@ -255,8 +260,37 @@ describe("NotionToZennMarkdown", () => {
       topics: 'CustomTopics'
     });
 
-    expect(md).toMatchSnapshot()
-  })
+    expect(md).toMatchSnapshot();
+  });
+
+  it('should output published_at if published_at is specified in a Mapping Key', async () => {
+    const n2zm = new NotionToZennMarkdown('secret_sample');
+    const frontMatter = await n2zm.getFrontMatterString('page_id', {
+      publishedAt: 'CustomPublishedAt'
+    });
+
+    expect(frontMatter).toBe(`---
+title: "記事のタイトルです。"
+emoji: "🤩"
+type: "tech"
+topics: ["notion"]
+published: true
+published_at: 2023-10-01 13:52
+---`);
+  });
+
+  it('should not output published_at if published_at is not specified in a Mapping Key', async () => {
+    const n2zm = new NotionToZennMarkdown('secret_sample');
+    const frontMatter = await n2zm.getFrontMatterString('page_id');
+
+    expect(frontMatter).toBe(`---
+title: "記事のタイトルです。"
+emoji: "🤩"
+type: "tech"
+topics: ["notion"]
+published: true
+---`);
+  });
 });
 
 

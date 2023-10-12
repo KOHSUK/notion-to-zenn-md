@@ -4,8 +4,9 @@ import { getTransformer } from "./transformer";
 import { ArticleTypes, FrontMatter } from "./zenn";
 import type { ArticleType } from "./zenn/types";
 import { getTitleString } from "./notion/utils";
-import { isCheckBoxProperty, isEmojiProperty, isMultiSelectProperty, isSelectProperty, isTitleProperty } from "./notion/type_guards";
+import { isCheckBoxProperty, isDateProperty, isEmojiProperty, isMultiSelectProperty, isSelectProperty, isTitleProperty } from "./notion/type_guards";
 import { decodeUnicodeEscapeSequence } from "./utils";
+import { format } from "date-fns";
 
 type FrontMatterNotionPropMapping = {
   [key in keyof Omit<FrontMatter, 'emoji'>]: string;
@@ -79,12 +80,21 @@ export default class NotionToZennMarkdown {
       published = publishedProp.checkbox;
     }
 
+    let publishedAt = undefined;
+    if (mappingKeys.publishedAt) {
+      const publishedAtProp = page.properties[mappingKeys.publishedAt];
+      if (isDateProperty(publishedAtProp)) {
+        publishedAt = format(new Date(publishedAtProp.date.start), 'yyyy-MM-dd HH:mm');
+      }
+    }
+
     const frontMatter: FrontMatter = {
       title,
       emoji,
       type,
       topics,
       published,
+      publishedAt
     }
 
     return frontMatter;
@@ -113,8 +123,9 @@ export default class NotionToZennMarkdown {
     const type = `type: "${frontMatter.type}"`;
     const topics = `topics: [${frontMatter.topics.map(topic => `"${topic}"`).join(', ')}]`;
     const published = `published: ${frontMatter.published}`
+    const publishedAt = frontMatter.publishedAt ? `published_at: ${frontMatter.publishedAt}` : "";
 
-    return `---\n${title}\n${emoji}\n${type}\n${topics}\n${published}\n---\n${mdString}`;
+    return `---\n${title}\n${emoji}\n${type}\n${topics}\n${published}${publishedAt ? `\n${publishedAt}` : ""}\n---${mdString ? `\n${mdString}` : ""}`;
   }
 
   /**
@@ -123,8 +134,9 @@ export default class NotionToZennMarkdown {
    * @param mappingKeys Mapping Keys to Zenn Markdown Front Matter Keys
    * @returns FrontMatterの文字列を生成
    */
-  async getFrontMatterString(pageId: string, mappingKeys: FrontMatterNotionPropMapping): Promise<string> {
-    const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
+  async getFrontMatterString(pageId: string, mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping): Promise<string> {
+    const mapping = { ...defaultMapping, ...mappingKeys };
+    const frontMatter = await this.getFrontMatter(pageId, mapping);
     const frontMatterString = this._generateMd("", frontMatter);
 
     return frontMatterString;

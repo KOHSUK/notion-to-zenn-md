@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@notionhq/client": "^2.2.13",
+    "date-fns": "^2.30.0",
     "notion-to-md": "^3.1.1"
   },
   "devDependencies": {
