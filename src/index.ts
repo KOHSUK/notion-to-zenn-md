@@ -29,7 +29,7 @@ export default class NotionToZennMarkdown {
   }
 
   /**
-   * 指定したNotionのページIDのページをZenn記法のマークダウンに変換して返します。
+   * 指定したNotionのページIDのページをZenn記法のマークダウン(FrontMatterなし)に変換して返します。
    * @param pageId Notion Page ID
    * @returns Markdown representation of the page
    */
@@ -41,48 +41,61 @@ export default class NotionToZennMarkdown {
   }
 
   /**
-   * 指定したNotionのページIDのページプロパティからZenn記法のマークダウンのFrontMatterを生成して返します。
+   * 指定したNotionのページIDのページプロパティからZenn記法のマークダウンのFrontMatterオブジェクトを生成して返します。
    * @param pageId Notion Page ID
    * @param mappingKeys Mapping Keys to Zenn Markdown Front Matter Keys
    * @returns Front Matter
    */
-  async getFrontMatter(pageId: string, mappingKeys: FrontMatterNotionPropMapping): Promise<FrontMatter> {
+  async getFrontMatter(pageId: string, mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping): Promise<FrontMatter> {
+    const mapping = { ...defaultMapping, ...mappingKeys };
     const page = await getPage(this.client, pageId);
 
+    if (!page) {
+      throw new Error(`Page not found. pageId: ${pageId}`);
+    }
+
+    // page.propertiesの中にmappingのプロパティが存在するかチェック
+    const propKeys = Object.keys(page.properties);
+    const mappingArray = Object.values(mapping);
+    const isExist = mappingArray.every((key) => propKeys.includes(key));
+    if (!isExist) {
+      throw new Error(`Mapping key is not found. pageId: ${pageId}, mapping: ${JSON.stringify(mapping)}`);
+    }
+
     // title
-    const titleProp = page.properties[mappingKeys.title];
+    const titleProp = page.properties[mapping.title];
     let title = "";
     if (isTitleProperty(titleProp)) {
       title = getTitleString(titleProp.title)
     }
 
     const emojiProp = page.icon
-    let emoji = "";
+    let emoji = "\U0001F600";
     if (isEmojiProperty(emojiProp)) {
       emoji = emojiProp.emoji;
     }
 
-    const typeProp = page.properties[mappingKeys.type];
+    const typeProp = page.properties[mapping.type];
     let type: ArticleType = ArticleTypes[0];
     if (isSelectProperty(typeProp) && (ArticleTypes.includes(typeProp.select.name as ArticleType))) {
       type = typeProp.select.name as ArticleType;
     }
 
-    const topicsProp = page.properties[mappingKeys.topics];
+    const topicsProp = page.properties[mapping.topics];
     let topics: string[] = [];
     if (isMultiSelectProperty(topicsProp)) {
       topics = topicsProp.multi_select.map((val) => val.name);
     }
 
-    const publishedProp = page.properties[mappingKeys.published];
+    const publishedProp = page.properties[mapping.published];
     let published = false;
     if (isCheckBoxProperty(publishedProp)) {
       published = publishedProp.checkbox;
     }
 
     let publishedAt = undefined;
-    if (mappingKeys.publishedAt) {
-      const publishedAtProp = page.properties[mappingKeys.publishedAt];
+    if (mapping.publishedAt) {
+      const publishedAtProp = page.properties[mapping.publishedAt];
       if (isDateProperty(publishedAtProp)) {
         publishedAt = format(new Date(publishedAtProp.date.start), 'yyyy-MM-dd HH:mm');
       }
@@ -129,14 +142,13 @@ export default class NotionToZennMarkdown {
   }
 
   /**
-   * 指定したNotionのページIDのページプロパティからFrontMatterを生成します。
+   * 指定したNotionのページIDのページプロパティからFrontMatter文字列を生成します。
    * @param pageId Notion Page ID
    * @param mappingKeys Mapping Keys to Zenn Markdown Front Matter Keys
    * @returns FrontMatterの文字列を生成
    */
-  async getFrontMatterString(pageId: string, mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping): Promise<string> {
-    const mapping = { ...defaultMapping, ...mappingKeys };
-    const frontMatter = await this.getFrontMatter(pageId, mapping);
+  async getFrontMatterString(pageId: string, mappingKeys?: Partial<FrontMatterNotionPropMapping>): Promise<string> {
+    const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
     const frontMatterString = this._generateMd("", frontMatter);
 
     return frontMatterString;
@@ -154,10 +166,15 @@ export default class NotionToZennMarkdown {
     return frontMatterString;
   }
 
-  async generateMd(pageId: string, mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping): Promise<string> {
-    const mapping = { ...defaultMapping, ...mappingKeys };
+  /**
+   * 指定したNotionのページIDのページをZenn記法のマークダウンに変換して返します。
+   * @param pageId Notion Page ID
+   * @param mappingKeys Mapping Keys to Zenn Markdown Front Matter Keys
+   * @returns Markdown representation of the page
+   */
+  async generateMd(pageId: string, mappingKeys?: Partial<FrontMatterNotionPropMapping>): Promise<string> {
     const mdString = await this.pageToZennMarkdown(pageId);
-    const frontMatter = await this.getFrontMatter(pageId, mapping);
+    const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
     const zennMarkdown = this._generateMd(mdString, frontMatter);
 
     return zennMarkdown;
