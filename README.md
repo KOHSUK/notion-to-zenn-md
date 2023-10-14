@@ -1,4 +1,13 @@
-# Notion to Zenn Markdown
+<div align="center">
+    <h1>Notion to Zenn Markdown</h1>
+    <p>Convert Notion page to <a href="https://zenn.dev">Zenn</a> markdown.</p>
+
+[![npm version](https://badge.fury.io/js/notion-to-zenn-md.svg)](https://badge.fury.io/js/notion-to-zenn-md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[📜 Documentation(日本語)](https://www.kohsuk.tech/articles/notion-to-zenn-markdown)
+
+</div>
 
 ## Install
 
