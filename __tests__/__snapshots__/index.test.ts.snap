@@ -1,71 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`NotionToZennMarkdown >  1`] = `
-"---
-title: \\"記事のタイトルです。\\"
-emoji: \\"🤩\\"
-type: \\"tech\\"
-topics: [\\"notion\\"]
-published: true
----
-
-# Heading 1
-
-
-## Heading 2
-
-
-### Heading 3
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum eros a metus imperdiet maximus. Aenean gravida lacinia ultricies. Duis sit amet justo et lectus pharetra accumsan. Pellentesque urna erat.(text)
-
-
-_イタリック_
-
-
-**太字**
-
-
-~~取り消し線~~
-
-
-インラインの\`code\`の挿入
-
-
-[テキストのリンク](https://www.kohsuk.tech/articles/blog-migration-to-nextjs-and-notion)
-
-- [ ] CheckBox(off)
-- [x] CheckBox(on)
-- Bulleted List 1
-- Bulleted List 2
-1. Numbered List 1
-2. Numbered List 2
-
-> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum eros a metus imperdiet maximus. Aenean gravida lacinia ultricies. Duis sit amet justo et lectus pharetra accumsan. Pellentesque urna erat.(Quote)
-
-
----
-
-
-
-:::message
-💡 Callout
-:::
-
-
-
-![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=60ebe5069c0ecd65a09c708136fd3dd385fe74d619df45229a2efaf2e9385254&X-Amz-SignedHeaders=host&x-id=GetObject)
-*画像（キャプションの表示）*
-
-
-
-@[card](https://www.kohsuk.tech/articles/blog-migration-to-nextjs-and-notion)
-
-
-"
-`;
-
 exports[`NotionToZennMarkdown > should generate markdown properly 1`] = `
 "---
 title: \\"記事のタイトルです。\\"
@@ -121,7 +55,7 @@ _イタリック_
 
 
 
-![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=60ebe5069c0ecd65a09c708136fd3dd385fe74d619df45229a2efaf2e9385254&X-Amz-SignedHeaders=host&x-id=GetObject)
+![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=XXXXXXXXXXXXXXXXXXXX%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&X-Amz-SignedHeaders=host&x-id=GetObject)
 *画像（キャプションの表示）*
 
 
@@ -187,7 +121,7 @@ _イタリック_
 
 
 
-![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=60ebe5069c0ecd65a09c708136fd3dd385fe74d619df45229a2efaf2e9385254&X-Amz-SignedHeaders=host&x-id=GetObject)
+![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=XXXXXXXXXXXXXXXXXXXX%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&X-Amz-SignedHeaders=host&x-id=GetObject)
 *画像（キャプションの表示）*
 
 

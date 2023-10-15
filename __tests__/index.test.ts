@@ -129,7 +129,7 @@ describe("NotionToZennMarkdown", () => {
         {
           type: 'image',
           blockId: 'f55c3a72-5797-44a5-a5f7-73615c0784e4',
-          parent: '![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=60ebe5069c0ecd65a09c708136fd3dd385fe74d619df45229a2efaf2e9385254&X-Amz-SignedHeaders=host&x-id=GetObject)\n' +
+          parent: '![画像（キャプションの表示）](https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=XXXXXXXXXXXXXXXXXXXX%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&X-Amz-SignedHeaders=host&x-id=GetObject)\n' +
             '*画像（キャプションの表示）*',
           children: []
         },
@@ -263,13 +263,14 @@ describe("NotionToZennMarkdown", () => {
     expect(md).toMatchSnapshot();
   });
 
-  it('should output published_at if published_at is specified in a Mapping Key', async () => {
-    const n2zm = new NotionToZennMarkdown('secret_sample');
-    const frontMatter = await n2zm.getFrontMatterString('page_id', {
-      publishedAt: 'CustomPublishedAt'
-    });
+  describe('getFrontMatterString', () => {
+    it('should output published_at if published_at is specified in a Mapping Key', async () => {
+      const n2zm = new NotionToZennMarkdown('secret_sample');
+      const frontMatter = await n2zm.getFrontMatterString('page_id', {
+        publishedAt: 'CustomPublishedAt'
+      });
 
-    expect(frontMatter).toBe(`---
+      expect(frontMatter).toBe(`---
 title: "記事のタイトルです。"
 emoji: "🤩"
 type: "tech"
@@ -277,20 +278,90 @@ topics: ["notion"]
 published: true
 published_at: 2023-10-01 13:52
 ---`);
-  });
+    });
 
-  it('should not output published_at if published_at is not specified in a Mapping Key', async () => {
-    const n2zm = new NotionToZennMarkdown('secret_sample');
-    const frontMatter = await n2zm.getFrontMatterString('page_id');
+    it('should not output published_at if published_at is not specified in a Mapping Key', async () => {
+      const n2zm = new NotionToZennMarkdown('secret_sample');
+      const frontMatter = await n2zm.getFrontMatterString('page_id');
 
-    expect(frontMatter).toBe(`---
+      expect(frontMatter).toBe(`---
 title: "記事のタイトルです。"
 emoji: "🤩"
 type: "tech"
 topics: ["notion"]
 published: true
 ---`);
+    });
+
+  })
+
+  describe('extractImageUrls', () => {
+    const markdown = `
+# My Favorite Places to Visit
+
+I love to travel and explore new places. Here are some of my favorite destinations:
+
+## Paris, France
+
+![Eiffel Tower](https://via.placeholder.com/500x300)
+
+Paris is known as the City of Love, and it's easy to see why. The architecture, the food, and the culture all combine to create a romantic atmosphere that is hard to resist. One of my favorite things to do in Paris is to visit the Eiffel Tower. The view from the top is breathtaking.
+
+## Bali, Indonesia
+
+![Bali Beach](https://via.placeholder.com/500x400)
+
+Bali is a tropical paradise that is perfect for relaxation and adventure. The beaches are beautiful, and the water is warm and clear. I love to go surfing in Bali, and there are plenty of great spots for beginners and experts alike.
+
+## Tokyo, Japan
+
+![Tokyo Skyline](https://via.placeholder.com/400x300)
+
+Tokyo is a city that never sleeps. There is always something to do or see, from visiting the temples and shrines to exploring the bustling streets and markets. One of my favorite things to do in Tokyo is to visit the Tsukiji Fish Market. The sushi there is some of the best I've ever had.
+
+## New York City, USA
+
+![New York City Skyline](https://via.placeholder.com/500x200)
+
+New York City is the city that never sleeps. There is always something to do or see, from visiting the museums and galleries to exploring the parks and neighborhoods. One of my favorite things to do in New York City is to visit Central Park. It's a great place to relax and enjoy nature in the middle of the city.
+
+Overall, these are just a few of my favorite places to visit. Each destination has its own unique charm and appeal, and I can't wait to explore more of the world in the future.
+`
+    it('should extract image urls', () => {
+      const n2zm = new NotionToZennMarkdown('sample');
+
+      const imageUrls = n2zm.extractImageUrls(markdown);
+
+      expect(imageUrls).toEqual([
+        'https://via.placeholder.com/500x300',
+        'https://via.placeholder.com/500x400',
+        'https://via.placeholder.com/400x300',
+        'https://via.placeholder.com/500x200'
+      ]);
+    });
+
+    it('should return empty array if there is no image', () => {
+      const n2zm = new NotionToZennMarkdown('sample');
+
+      const imageUrls = n2zm.extractImageUrls('');
+
+      expect(imageUrls).toEqual([]);
+    });
+
   });
+
+  describe('listImageUrls', () => {
+    it('should list image urls', async () => {
+      const n2zm = new NotionToZennMarkdown('sample');
+
+      const imageUrls = await n2zm.listImageUrls('page_id');
+
+      expect(imageUrls).toEqual([
+        'https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=XXXXXXXXXXXXXXXXXXXX%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&X-Amz-SignedHeaders=host&x-id=GetObject'
+      ]);
+    });
+  })
+
 });
 
 

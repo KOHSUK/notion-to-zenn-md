@@ -179,4 +179,40 @@ export default class NotionToZennMarkdown {
 
     return zennMarkdown;
   }
+
+  /**
+   * Markdown文字列から画像のURLのリストを抽出します。
+   * @param mdString Markdown文字列
+   * @returns Image paths
+   */
+  extractImageUrls(mdString: string): string[] {
+    const imagePathRegex = /!\[.*?\]\((http[s]?:\/\/[^\s)]+|[^)\s]+)\)/g;
+    const matches = mdString.match(imagePathRegex);
+
+    if (!matches) {
+      return [];
+    }
+
+    const imagePaths = matches.map((match) => {
+      const pathMatch = match.match(/!\[.*?\]\((http[s]?:\/\/[^\s)]+|[^)\s]+)\)/);
+      if (pathMatch && pathMatch[1]) {
+        return pathMatch[1];
+      }
+      return "";
+    });
+
+    return imagePaths.filter((path) => path !== "");
+  }
+
+  /**
+   * 指定したNotionのページIDのページに含まれる画像のURLのリストを返します。
+   * @param pageId Notion Page ID
+   * @returns Image paths
+   */
+  async listImageUrls(pageId: string): Promise<string[]> {
+    const markdown = await this.pageToZennMarkdown(pageId);
+    const imageUrls = this.extractImageUrls(markdown);
+
+    return imageUrls;
+  }
 }
