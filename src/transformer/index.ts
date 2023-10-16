@@ -1,5 +1,5 @@
 import { NotionToMarkdown } from "notion-to-md";
-import { Bookmark, Callout, Embed, Equation, Image, NotionClient, Toggle } from '../notion';
+import { Bookmark, Callout, Code, Embed, Equation, Image, NotionClient, Toggle } from '../notion';
 
 export function getTransformer(notion: NotionClient) {
   const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -78,6 +78,25 @@ $$`;
 ${icon} ${callout.rich_text.map((item) => item.plain_text).join("")}
 :::
 `;
+  });
+
+  // code
+  // https://zenn.dev/zenn/articles/markdown-guide#%E3%82%B3%E3%83%BC%E3%83%89%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF
+  n2m.setCustomTransformer('code', async (block) => {
+    const { code } = block as Code;
+    const language = code.language === 'plain text' ? 'text' : code.language;
+    const fileName = code.caption.map((item) => item.plain_text).join("");
+    const codeString = await n2m.blockToMarkdown(block);
+
+    if (language === "diff") {
+      return `\`\`\`${language} ${fileName || "text"}
+${codeString}
+\`\`\``;
+    }
+
+    return `\`\`\`${language}${fileName ? `:${fileName}` : ""}
+${codeString}
+\`\`\``;
   });
 
   // toggleのcustom transformerはバグで動作しない　https://github.com/souvikinator/notion-to-md/issues/98
