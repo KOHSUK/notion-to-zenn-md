@@ -82,11 +82,11 @@ ${icon} ${callout.rich_text.map((item) => item.plain_text).join("")}
 
   // code
   // https://zenn.dev/zenn/articles/markdown-guide#%E3%82%B3%E3%83%BC%E3%83%89%E3%83%96%E3%83%AD%E3%83%83%E3%82%AF
-  n2m.setCustomTransformer('code', async (block) => {
+  n2m.setCustomTransformer('code', (block) => {
     const { code } = block as Code;
     const language = code.language === 'plain text' ? 'text' : code.language;
     const fileName = code.caption.map((item) => item.plain_text).join("");
-    const codeString = await n2m.blockToMarkdown(block);
+    const codeString = code.rich_text.map((item) => item.plain_text).join("");
 
     if (language === "diff") {
       return `\`\`\`${language} ${fileName || "text"}
