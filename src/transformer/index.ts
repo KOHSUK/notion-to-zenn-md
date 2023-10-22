@@ -94,6 +94,12 @@ ${codeString}
 \`\`\``;
     }
 
+    if (language === "text" && fileName) {
+      return `\`\`\`${fileName}
+${codeString}
+\`\`\``;
+    }
+
     return `\`\`\`${language}${fileName ? `:${fileName}` : ""}
 ${codeString}
 \`\`\``;
