@@ -1,14 +1,13 @@
 import { NotionToMarkdown } from "notion-to-md";
 import { NotionClient, getNotionClient, getPage } from "./notion";
 import { getTransformer } from "./transformer";
-import { ArticleTypes, FrontMatter } from "./zenn";
-import type { ArticleType } from "./zenn/types";
+import { FrontMatter } from "./zenn";
 import { getTitleString } from "./notion/utils";
 import { isCheckBoxProperty, isDateProperty, isEmojiProperty, isMultiSelectProperty, isSelectProperty, isTitleProperty } from "./notion/type_guards";
 import { decodeUnicodeEscapeSequence } from "./utils";
 import { format } from "date-fns";
 
-type FrontMatterNotionPropMapping = {
+export type FrontMatterNotionPropMapping = {
   [key in keyof Omit<FrontMatter, 'emoji'>]: string;
 }
 
@@ -54,49 +53,41 @@ export default class NotionToZennMarkdown {
       throw new Error(`Page not found. pageId: ${pageId}`);
     }
 
-    // page.propertiesの中にmappingのプロパティが存在するかチェック
-    const propKeys = Object.keys(page.properties);
-    const mappingArray = Object.values(mapping);
-    const isExist = mappingArray.every((key) => propKeys.includes(key));
-    if (!isExist) {
-      throw new Error(`Mapping key is not found. pageId: ${pageId}, mapping: ${JSON.stringify(mapping)}`);
-    }
-
     // title
     const titleProp = page.properties[mapping.title];
     let title = "";
-    if (isTitleProperty(titleProp)) {
+    if (titleProp && isTitleProperty(titleProp)) {
       title = getTitleString(titleProp.title)
     }
 
     const emojiProp = page.icon
-    let emoji = "\U0001F600";
-    if (isEmojiProperty(emojiProp)) {
+    let emoji = "";
+    if (emojiProp && isEmojiProperty(emojiProp)) {
       emoji = emojiProp.emoji;
     }
 
     const typeProp = page.properties[mapping.type];
-    let type: ArticleType = ArticleTypes[0];
-    if (isSelectProperty(typeProp) && (ArticleTypes.includes(typeProp.select.name as ArticleType))) {
-      type = typeProp.select.name as ArticleType;
+    let type = "";
+    if (typeProp && isSelectProperty(typeProp)) {
+      type = typeProp.select.name;
     }
 
     const topicsProp = page.properties[mapping.topics];
     let topics: string[] = [];
-    if (isMultiSelectProperty(topicsProp)) {
+    if (topicsProp && isMultiSelectProperty(topicsProp)) {
       topics = topicsProp.multi_select.map((val) => val.name);
     }
 
     const publishedProp = page.properties[mapping.published];
     let published = false;
-    if (isCheckBoxProperty(publishedProp)) {
+    if (publishedProp && isCheckBoxProperty(publishedProp)) {
       published = publishedProp.checkbox;
     }
 
     let publishedAt = undefined;
     if (mapping.publishedAt) {
       const publishedAtProp = page.properties[mapping.publishedAt];
-      if (isDateProperty(publishedAtProp)) {
+      if (publishedAtProp && isDateProperty(publishedAtProp)) {
         publishedAt = format(new Date(publishedAtProp.date.start), 'yyyy-MM-dd HH:mm');
       }
     }
