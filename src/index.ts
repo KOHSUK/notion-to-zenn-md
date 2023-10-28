@@ -5,7 +5,7 @@ import { FrontMatter } from "./zenn";
 import { getTitleString } from "./notion/utils";
 import { isCheckBoxProperty, isDateProperty, isEmojiProperty, isMultiSelectProperty, isSelectProperty, isTitleProperty } from "./notion/type_guards";
 import { decodeUnicodeEscapeSequence } from "./utils";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 export type FrontMatterNotionPropMapping = {
   [key in keyof Omit<FrontMatter, 'emoji'>]: string;
@@ -88,7 +88,7 @@ export default class NotionToZennMarkdown {
     if (mapping.publishedAt) {
       const publishedAtProp = page.properties[mapping.publishedAt];
       if (publishedAtProp && isDateProperty(publishedAtProp)) {
-        publishedAt = format(new Date(publishedAtProp.date.start), 'yyyy-MM-dd HH:mm');
+        publishedAt = format(parseISO(publishedAtProp.date.start), 'yyyy-MM-dd HH:mm');
       }
     }
 
