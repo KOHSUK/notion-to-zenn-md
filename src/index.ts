@@ -1,8 +1,14 @@
-import { NotionToMarkdown } from "notion-to-md";
-import { Image, NotionClient, getBlocks, getNotionClient, getPage } from "./notion";
-import { getTransformer } from "./transformer";
-import { FrontMatter } from "./zenn";
-import { getTitleString } from "./notion/utils";
+import { NotionToMarkdown } from 'notion-to-md';
+import {
+  Image,
+  NotionClient,
+  getBlocks,
+  getNotionClient,
+  getPage,
+} from './notion';
+import { getTransformer } from './transformer';
+import { FrontMatter } from './zenn';
+import { getTitleString } from './notion/utils';
 import {
   isCheckBoxProperty,
   isDateProperty,
@@ -11,19 +17,19 @@ import {
   isMultiSelectProperty,
   isSelectProperty,
   isTitleProperty,
-} from "./notion/type_guards";
-import { decodeUnicodeEscapeSequence } from "./utils";
-import { format, parseISO } from "date-fns";
+} from './notion/type_guards';
+import { decodeUnicodeEscapeSequence } from './utils';
+import { format, parseISO } from 'date-fns';
 
 export type FrontMatterNotionPropMapping = {
-  [key in keyof Omit<FrontMatter, "emoji">]: string;
+  [key in keyof Omit<FrontMatter, 'emoji'>]: string;
 };
 
 const defaultMapping: FrontMatterNotionPropMapping = {
-  title: "Title",
-  type: "Type",
-  topics: "Topics",
-  published: "Published",
+  title: 'Title',
+  type: 'Type',
+  topics: 'Topics',
+  published: 'Published',
 } as const;
 
 export default class NotionToZennMarkdown {
@@ -55,7 +61,7 @@ export default class NotionToZennMarkdown {
    */
   async getFrontMatter(
     pageId: string,
-    mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping
+    mappingKeys: Partial<FrontMatterNotionPropMapping> = defaultMapping,
   ): Promise<FrontMatter> {
     const mapping = { ...defaultMapping, ...mappingKeys };
     const page = await getPage(this.client, pageId);
@@ -66,19 +72,19 @@ export default class NotionToZennMarkdown {
 
     // title
     const titleProp = page.properties[mapping.title];
-    let title = "";
+    let title = '';
     if (titleProp && isTitleProperty(titleProp)) {
       title = getTitleString(titleProp.title);
     }
 
     const emojiProp = page.icon;
-    let emoji = "";
+    let emoji = '';
     if (emojiProp && isEmojiProperty(emojiProp)) {
       emoji = emojiProp.emoji;
     }
 
     const typeProp = page.properties[mapping.type];
-    let type = "";
+    let type = '';
     if (typeProp && isSelectProperty(typeProp)) {
       type = typeProp.select.name;
     }
@@ -101,7 +107,7 @@ export default class NotionToZennMarkdown {
       if (publishedAtProp && isDateProperty(publishedAtProp)) {
         publishedAt = format(
           parseISO(publishedAtProp.date.start),
-          "yyyy-MM-dd HH:mm"
+          'yyyy-MM-dd HH:mm',
         );
       }
     }
@@ -141,15 +147,15 @@ export default class NotionToZennMarkdown {
     const type = `type: "${frontMatter.type}"`;
     const topics = `topics: [${frontMatter.topics
       .map((topic) => `"${topic}"`)
-      .join(", ")}]`;
+      .join(', ')}]`;
     const published = `published: ${frontMatter.published}`;
     const publishedAt = frontMatter.publishedAt
       ? `published_at: ${frontMatter.publishedAt}`
-      : "";
+      : '';
 
     return `---\n${title}\n${emoji}\n${type}\n${topics}\n${published}${
-      publishedAt ? `\n${publishedAt}` : ""
-    }\n---${mdString ? `\n${mdString}` : ""}`;
+      publishedAt ? `\n${publishedAt}` : ''
+    }\n---${mdString ? `\n${mdString}` : ''}`;
   }
 
   /**
@@ -160,10 +166,10 @@ export default class NotionToZennMarkdown {
    */
   async getFrontMatterString(
     pageId: string,
-    mappingKeys?: Partial<FrontMatterNotionPropMapping>
+    mappingKeys?: Partial<FrontMatterNotionPropMapping>,
   ): Promise<string> {
     const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
-    const frontMatterString = this._generateMd("", frontMatter);
+    const frontMatterString = this._generateMd('', frontMatter);
 
     return frontMatterString;
   }
@@ -188,7 +194,7 @@ export default class NotionToZennMarkdown {
    */
   async generateMd(
     pageId: string,
-    mappingKeys?: Partial<FrontMatterNotionPropMapping>
+    mappingKeys?: Partial<FrontMatterNotionPropMapping>,
   ): Promise<string> {
     const mdString = await this.pageToZennMarkdown(pageId);
     const frontMatter = await this.getFrontMatter(pageId, mappingKeys);
@@ -212,15 +218,15 @@ export default class NotionToZennMarkdown {
 
     const imagePaths = matches.map((match) => {
       const pathMatch = match.match(
-        /!\[.*?\]\((http[s]?:\/\/[^\s)]+|[^)\s]+)\)/
+        /!\[.*?\]\((http[s]?:\/\/[^\s)]+|[^)\s]+)\)/,
       );
       if (pathMatch && pathMatch[1]) {
         return pathMatch[1];
       }
-      return "";
+      return '';
     });
 
-    return imagePaths.filter((path) => path !== "");
+    return imagePaths.filter((path) => path !== '');
   }
 
   /**
@@ -229,7 +235,7 @@ export default class NotionToZennMarkdown {
    * @returns Image paths with expiry time and caption
    */
   async listImageUrls(
-    pageId: string
+    pageId: string,
   ): Promise<
     Array<{ url: string; expiryTime: string | null; caption: string }>
   > {
@@ -239,8 +245,8 @@ export default class NotionToZennMarkdown {
     const imageUrls = images.map((block) => {
       const caption = block.image.caption
         .map((item) => item.plain_text)
-        .join("");
-      if (block.image.type === "external") {
+        .join('');
+      if (block.image.type === 'external') {
         return {
           url: block.image.external.url,
           expiryTime: null,

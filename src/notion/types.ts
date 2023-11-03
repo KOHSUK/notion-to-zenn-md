@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Client } from "@notionhq/client";
+import { Client } from '@notionhq/client';
 
 export type NotionClient = Client;
 
@@ -8,7 +8,7 @@ export type NotionClient = Client;
 // User
 // ##############################################
 type UserWrapper<T extends string, U> = {
-  object: "user";
+  object: 'user';
   id: string;
   type?: T;
   name?: string;
@@ -18,16 +18,16 @@ type UserWrapper<T extends string, U> = {
 };
 
 type UserType = UserWrapper<
-  "person",
+  'person',
   {
     email: string;
   }
 >;
 
 type BotType = UserWrapper<
-  "bot",
+  'bot',
   {
-    type: "workspace" | "user";
+    type: 'workspace' | 'user';
     workspace_name?: string | null;
   }
 >;
@@ -39,16 +39,16 @@ export type User = UserType | BotType;
 // ##############################################
 
 export type PropertyColor =
-  | "blue"
-  | "brown"
-  | "default"
-  | "gray"
-  | "green"
-  | "orange"
-  | "pink"
-  | "purple"
-  | "red"
-  | "yellow";
+  | 'blue'
+  | 'brown'
+  | 'default'
+  | 'gray'
+  | 'green'
+  | 'orange'
+  | 'pink'
+  | 'purple'
+  | 'red'
+  | 'yellow';
 
 export type PagePropertyWrapper<T extends string, U> = {
   type: T;
@@ -57,14 +57,14 @@ export type PagePropertyWrapper<T extends string, U> = {
   [K in T]: U;
 };
 
-export type CheckBoxProperty = PagePropertyWrapper<"checkbox", boolean>;
+export type CheckBoxProperty = PagePropertyWrapper<'checkbox', boolean>;
 
-export type CreatedByProperty = PagePropertyWrapper<"created_by", User>;
+export type CreatedByProperty = PagePropertyWrapper<'created_by', User>;
 
-export type CreatedTimeProperty = PagePropertyWrapper<"created_time", string>;
+export type CreatedTimeProperty = PagePropertyWrapper<'created_time', string>;
 
 export type DateProperty = PagePropertyWrapper<
-  "date",
+  'date',
   {
     start: string;
     end: string | null;
@@ -72,7 +72,7 @@ export type DateProperty = PagePropertyWrapper<
   }
 >;
 
-export type EmailProperty = PagePropertyWrapper<"email", string>;
+export type EmailProperty = PagePropertyWrapper<'email', string>;
 
 type FileWrapper<T extends string, U> = {
   type: T;
@@ -82,7 +82,7 @@ type FileWrapper<T extends string, U> = {
 };
 
 export type FilePropertyValue = FileWrapper<
-  "file",
+  'file',
   {
     url: string;
     expiry_time: string;
@@ -90,7 +90,7 @@ export type FilePropertyValue = FileWrapper<
 >;
 
 export type ExternalPropertyValue = FileWrapper<
-  "external",
+  'external',
   {
     url: string;
   }
@@ -99,7 +99,7 @@ export type ExternalPropertyValue = FileWrapper<
 export type FileProperty = FilePropertyValue | ExternalPropertyValue;
 
 export type FilesProperty = PagePropertyWrapper<
-  "files",
+  'files',
   Array<
     {
       name: string;
@@ -114,17 +114,17 @@ type FormulaValue<T extends string, U> = {
 };
 
 export type FormulaProperty = PagePropertyWrapper<
-  "formula",
-  | FormulaValue<"boolean", boolean>
-  | FormulaValue<"date", any>
-  | FormulaValue<"number", number>
-  | FormulaValue<"string", string>
+  'formula',
+  | FormulaValue<'boolean', boolean>
+  | FormulaValue<'date', any>
+  | FormulaValue<'number', number>
+  | FormulaValue<'string', string>
 >;
 
-export type LastEditedByProperty = PagePropertyWrapper<"last_edited_by", User>;
+export type LastEditedByProperty = PagePropertyWrapper<'last_edited_by', User>;
 
 export type LastEditedTimeProperty = PagePropertyWrapper<
-  "last_edited_time",
+  'last_edited_time',
   string
 >;
 
@@ -135,31 +135,31 @@ type MultiSelectValue = {
 };
 
 export type MultiSelectProperty = PagePropertyWrapper<
-  "multi_select",
+  'multi_select',
   Array<MultiSelectValue>
 >;
 
-export type NumberProperty = PagePropertyWrapper<"number", number>;
+export type NumberProperty = PagePropertyWrapper<'number', number>;
 
-export type PeopleProperty = PagePropertyWrapper<"people", User[]>;
+export type PeopleProperty = PagePropertyWrapper<'people', User[]>;
 
-export type PhoneNumberProperty = PagePropertyWrapper<"phone_number", string>;
+export type PhoneNumberProperty = PagePropertyWrapper<'phone_number', string>;
 
 export type RelationProperty = PagePropertyWrapper<
-  "relation",
+  'relation',
   Array<{ id: string }>
 > & { has_more: boolean };
 
 // TODO
-export type RollupProperty = PagePropertyWrapper<"rollup", any>;
+export type RollupProperty = PagePropertyWrapper<'rollup', any>;
 
 export type RichTextProperty = PagePropertyWrapper<
-  "rich_text",
+  'rich_text',
   Array<TextRichText>
 >;
 
 export type SelectProperty = PagePropertyWrapper<
-  "select",
+  'select',
   {
     id: string;
     name: string;
@@ -168,7 +168,7 @@ export type SelectProperty = PagePropertyWrapper<
 >;
 
 export type StatusProperty = PagePropertyWrapper<
-  "status",
+  'status',
   {
     id: string;
     name: string;
@@ -177,12 +177,12 @@ export type StatusProperty = PagePropertyWrapper<
 >;
 
 export type Title = Array<TextRichText>;
-export type TitleProperty = PagePropertyWrapper<"title", Title>;
+export type TitleProperty = PagePropertyWrapper<'title', Title>;
 
-export type UrlProperty = PagePropertyWrapper<"url", string>;
+export type UrlProperty = PagePropertyWrapper<'url', string>;
 
 export type UniqueIdProperty = PagePropertyWrapper<
-  "unique_id",
+  'unique_id',
   {
     number: number;
     prefix: string | null;
@@ -196,7 +196,7 @@ export type Date = {
 };
 
 export type VerificationProperty = PagePropertyWrapper<
-  "verification",
+  'verification',
   {
     state: string;
     verified_by: User | null;
@@ -209,7 +209,7 @@ export type VerificationProperty = PagePropertyWrapper<
 // ##############################################
 
 export type Emoji = {
-  type: "emoji";
+  type: 'emoji';
   emoji: string;
 };
 
@@ -243,10 +243,10 @@ type ParentWrapper<T extends string, U> = {
   [K in T]: U;
 };
 
-type DatabaseParent = ParentWrapper<"database_id", string>;
-type PageParent = ParentWrapper<"page_id", string>;
-type WorkspaceParent = ParentWrapper<"workspace", true>;
-type BlockParent = ParentWrapper<"block_id", string>;
+type DatabaseParent = ParentWrapper<'database_id', string>;
+type PageParent = ParentWrapper<'page_id', string>;
+type WorkspaceParent = ParentWrapper<'workspace', true>;
+type BlockParent = ParentWrapper<'block_id', string>;
 export type Parent =
   | DatabaseParent
   | PageParent
@@ -254,7 +254,7 @@ export type Parent =
   | BlockParent;
 
 export type Page = {
-  object: "page";
+  object: 'page';
   id: string;
   created_time: string;
   created_by: User;
@@ -294,7 +294,7 @@ export type RichTextWapper<T, U> = U & {
 };
 
 export type EquationRichText = RichTextWapper<
-  "equation",
+  'equation',
   {
     equation: {
       expression: string;
@@ -303,7 +303,7 @@ export type EquationRichText = RichTextWapper<
 >;
 
 export type TextRichText = RichTextWapper<
-  "text",
+  'text',
   {
     text: {
       content: string;
@@ -314,44 +314,44 @@ export type TextRichText = RichTextWapper<
   }
 >;
 
-export type DateMention = MentionWrapper<"date"> & {
+export type DateMention = MentionWrapper<'date'> & {
   date: {
     start: string;
     end: string | null;
   };
 };
 
-export type DatabaseMention = MentionWrapper<"database"> & {
+export type DatabaseMention = MentionWrapper<'database'> & {
   database: {
     id: string;
   };
 };
 
-export type LinkPreviewMention = MentionWrapper<"link_preview"> & {
+export type LinkPreviewMention = MentionWrapper<'link_preview'> & {
   link_preview: {
     url: string;
   };
 };
 
-export type PageMeniton = MentionWrapper<"page"> & {
+export type PageMeniton = MentionWrapper<'page'> & {
   page: {
     id: string;
   };
 };
 
-export type TemplateMention = MentionWrapper<"template_mention"> & {
+export type TemplateMention = MentionWrapper<'template_mention'> & {
   template_mention: {
     type: string;
     template_mention_date: string;
   };
 };
 
-export type UserMention = MentionWrapper<"user"> & {
+export type UserMention = MentionWrapper<'user'> & {
   user: User;
 };
 
 export type MentionWrapper<T> = RichTextWapper<
-  "mention",
+  'mention',
   {
     mention: {
       type: T;
@@ -373,7 +373,7 @@ export type RichText = EquationRichText | TextRichText | MentionRichText;
 
 export type BlockWrapper<T extends string, U> = {
   type: T;
-  object: "block";
+  object: 'block';
   id: string;
   parent: {
     type: string;
@@ -391,7 +391,7 @@ export type BlockWrapper<T extends string, U> = {
 
 // Define Bookmark using the BlockContentWrapper
 export type Bookmark = BlockWrapper<
-  "bookmark",
+  'bookmark',
   {
     caption: RichText[];
     url: string;
@@ -399,31 +399,31 @@ export type Bookmark = BlockWrapper<
 >;
 
 export type Color =
-  | "blue"
-  | "blue_background"
-  | "brown"
-  | "brown_background"
-  | "default"
-  | "gray"
-  | "gray_background"
-  | "green"
-  | "green_background"
-  | "orange"
-  | "orange_background"
-  | "yellow"
-  | "green"
-  | "pink"
-  | "pink_background"
-  | "purple"
-  | "purple_background"
-  | "red"
-  | "red_background"
-  | "yellow_background";
+  | 'blue'
+  | 'blue_background'
+  | 'brown'
+  | 'brown_background'
+  | 'default'
+  | 'gray'
+  | 'gray_background'
+  | 'green'
+  | 'green_background'
+  | 'orange'
+  | 'orange_background'
+  | 'yellow'
+  | 'green'
+  | 'pink'
+  | 'pink_background'
+  | 'purple'
+  | 'purple_background'
+  | 'red'
+  | 'red_background'
+  | 'yellow_background';
 
-export type Breadcrumb = BlockWrapper<"breadcrumb", {}>;
+export type Breadcrumb = BlockWrapper<'breadcrumb', {}>;
 
 export type BulletedListItem = BlockWrapper<
-  "bulleted_list_item",
+  'bulleted_list_item',
   {
     rich_text: RichText[];
     color: Color;
@@ -432,7 +432,7 @@ export type BulletedListItem = BlockWrapper<
 >;
 
 export type Callout = BlockWrapper<
-  "callout",
+  'callout',
   {
     rich_text: RichText[];
     icon: Emoji | FileProperty; // TODO
@@ -441,95 +441,95 @@ export type Callout = BlockWrapper<
 >;
 
 export type ChildDatabase = BlockWrapper<
-  "child_database",
+  'child_database',
   {
     title: string;
   }
 >;
 
 export type ChildPage = BlockWrapper<
-  "child_page",
+  'child_page',
   {
     title: string;
   }
 >;
 
 export type Language =
-  | "abap"
-  | "arduino"
-  | "bash"
-  | "basic"
-  | "c"
-  | "clojure"
-  | "coffeescript"
-  | "c++"
-  | "c#"
-  | "css"
-  | "dart"
-  | "diff"
-  | "docker"
-  | "elixir"
-  | "elm"
-  | "erlang"
-  | "flow"
-  | "fortran"
-  | "f#"
-  | "gherkin"
-  | "glsl"
-  | "go"
-  | "graphql"
-  | "groovy"
-  | "haskell"
-  | "html"
-  | "java"
-  | "javascript"
-  | "json"
-  | "julia"
-  | "kotlin"
-  | "latex"
-  | "less"
-  | "lisp"
-  | "livescript"
-  | "lua"
-  | "makefile"
-  | "markdown"
-  | "markup"
-  | "matlab"
-  | "mermaid"
-  | "nix"
-  | "objective-c"
-  | "ocaml"
-  | "pascal"
-  | "perl"
-  | "php"
-  | "plain text"
-  | "powershell"
-  | "prolog"
-  | "protobuf"
-  | "python"
-  | "r"
-  | "reason"
-  | "ruby"
-  | "rust"
-  | "sass"
-  | "scala"
-  | "scheme"
-  | "scss"
-  | "shell"
-  | "sql"
-  | "swift"
-  | "typescript"
-  | "vb.net"
-  | "verilog"
-  | "vhdl"
-  | "visual basic"
-  | "webassembly"
-  | "xml"
-  | "yaml"
-  | "java/c/c++/c#";
+  | 'abap'
+  | 'arduino'
+  | 'bash'
+  | 'basic'
+  | 'c'
+  | 'clojure'
+  | 'coffeescript'
+  | 'c++'
+  | 'c#'
+  | 'css'
+  | 'dart'
+  | 'diff'
+  | 'docker'
+  | 'elixir'
+  | 'elm'
+  | 'erlang'
+  | 'flow'
+  | 'fortran'
+  | 'f#'
+  | 'gherkin'
+  | 'glsl'
+  | 'go'
+  | 'graphql'
+  | 'groovy'
+  | 'haskell'
+  | 'html'
+  | 'java'
+  | 'javascript'
+  | 'json'
+  | 'julia'
+  | 'kotlin'
+  | 'latex'
+  | 'less'
+  | 'lisp'
+  | 'livescript'
+  | 'lua'
+  | 'makefile'
+  | 'markdown'
+  | 'markup'
+  | 'matlab'
+  | 'mermaid'
+  | 'nix'
+  | 'objective-c'
+  | 'ocaml'
+  | 'pascal'
+  | 'perl'
+  | 'php'
+  | 'plain text'
+  | 'powershell'
+  | 'prolog'
+  | 'protobuf'
+  | 'python'
+  | 'r'
+  | 'reason'
+  | 'ruby'
+  | 'rust'
+  | 'sass'
+  | 'scala'
+  | 'scheme'
+  | 'scss'
+  | 'shell'
+  | 'sql'
+  | 'swift'
+  | 'typescript'
+  | 'vb.net'
+  | 'verilog'
+  | 'vhdl'
+  | 'visual basic'
+  | 'webassembly'
+  | 'xml'
+  | 'yaml'
+  | 'java/c/c++/c#';
 
 export type Code = BlockWrapper<
-  "code",
+  'code',
   {
     caption: RichText[];
     rich_text: RichText[];
@@ -537,28 +537,28 @@ export type Code = BlockWrapper<
   }
 >;
 
-export type ColumnList = BlockWrapper<"column_list", {}>;
+export type ColumnList = BlockWrapper<'column_list', {}>;
 
-export type Column = BlockWrapper<"column", {}>;
+export type Column = BlockWrapper<'column', {}>;
 
-export type Divider = BlockWrapper<"divider", {}>;
+export type Divider = BlockWrapper<'divider', {}>;
 
 export type Embed = BlockWrapper<
-  "embed",
+  'embed',
   {
     url: string;
   }
 >;
 
 export type Equation = BlockWrapper<
-  "equation",
+  'equation',
   {
     expression: string;
   }
 >;
 
 export type File = BlockWrapper<
-  "file",
+  'file',
   {
     caption: RichText[];
     type: string;
@@ -567,7 +567,7 @@ export type File = BlockWrapper<
 >;
 
 export type Heading1 = BlockWrapper<
-  "heading_1",
+  'heading_1',
   {
     rich_text: RichText[];
     color: Color;
@@ -576,7 +576,7 @@ export type Heading1 = BlockWrapper<
 >;
 
 export type Heading2 = BlockWrapper<
-  "heading_2",
+  'heading_2',
   {
     rich_text: RichText[];
     color: Color;
@@ -585,7 +585,7 @@ export type Heading2 = BlockWrapper<
 >;
 
 export type Heading3 = BlockWrapper<
-  "heading_3",
+  'heading_3',
   {
     rich_text: RichText[];
     color: Color;
@@ -593,7 +593,7 @@ export type Heading3 = BlockWrapper<
   }
 >;
 
-export type FileType = "external" | "file";
+export type FileType = 'external' | 'file';
 
 type ImageWrapper<T extends string, U> = {
   type: T;
@@ -603,27 +603,24 @@ type ImageWrapper<T extends string, U> = {
   caption: RichText[];
 };
 
-export type ExternalImage = ImageWrapper<
-  "external",
-  { url: string; }
->;
+export type ExternalImage = ImageWrapper<'external', { url: string }>;
 
 export type FileImage = ImageWrapper<
-  "file",
-  { url: string; expiry_time: string; }
+  'file',
+  { url: string; expiry_time: string }
 >;
 
-export type Image = BlockWrapper<"image", ExternalImage | FileImage>;
+export type Image = BlockWrapper<'image', ExternalImage | FileImage>;
 
 export type LinkPreview = BlockWrapper<
-  "link_preview",
+  'link_preview',
   {
     url: string;
   }
 >;
 
 export type NumberedListItem = BlockWrapper<
-  "numbered_list_item",
+  'numbered_list_item',
   {
     rich_text: RichText[];
     color: Color;
@@ -632,7 +629,7 @@ export type NumberedListItem = BlockWrapper<
 >;
 
 export type Paragraph = BlockWrapper<
-  "paragraph",
+  'paragraph',
   {
     rich_text: RichText[];
     color: Color;
@@ -641,7 +638,7 @@ export type Paragraph = BlockWrapper<
 >;
 
 export type PDF = BlockWrapper<
-  "pdf",
+  'pdf',
   {
     caption: RichText[];
     type: FileType;
@@ -656,7 +653,7 @@ export type PDF = BlockWrapper<
 >;
 
 export type Quote = BlockWrapper<
-  "quote",
+  'quote',
   {
     rich_text: RichText[];
     color: Color;
@@ -665,7 +662,7 @@ export type Quote = BlockWrapper<
 >;
 
 export type SyncedBlock = BlockWrapper<
-  "synced_block",
+  'synced_block',
   {
     synced_form?: {
       block_id: string;
@@ -675,7 +672,7 @@ export type SyncedBlock = BlockWrapper<
 >;
 
 export type Table = BlockWrapper<
-  "table",
+  'table',
   {
     talbe_width: number;
     has_column_header: boolean;
@@ -684,21 +681,21 @@ export type Table = BlockWrapper<
 >;
 
 export type TableRow = BlockWrapper<
-  "table_row",
+  'table_row',
   {
     cells: RichText[];
   }
 >;
 
 export type TableOfContents = BlockWrapper<
-  "table_of_contents",
+  'table_of_contents',
   {
     color: Color;
   }
 >;
 
 export type ToDo = BlockWrapper<
-  "to_do",
+  'to_do',
   {
     rich_text: RichText[];
     checked: boolean;
@@ -708,7 +705,7 @@ export type ToDo = BlockWrapper<
 >;
 
 export type Toggle = BlockWrapper<
-  "toggle",
+  'toggle',
   {
     rich_text: RichText[];
     color: Color;
@@ -717,7 +714,7 @@ export type Toggle = BlockWrapper<
 >;
 
 export type Video = BlockWrapper<
-  "video",
+  'video',
   {
     caption: RichText[];
     type: FileType;
@@ -761,7 +758,7 @@ export type Block =
   | Video;
 
 export type BlockList = {
-  object: "list";
+  object: 'list';
   results: Array<Block>;
   next_cursor: string | null;
   has_more: boolean;

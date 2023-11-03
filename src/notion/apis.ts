@@ -8,7 +8,7 @@ export function getNotionClient(apiSecret: string) {
   });
 
   return client;
-};
+}
 
 export async function getDatabase(notion: Client, databaseId: string) {
   const response = await notion.databases.query({
@@ -16,13 +16,13 @@ export async function getDatabase(notion: Client, databaseId: string) {
   });
 
   return response.results as Database;
-};
+}
 
 export async function getPage(notion: Client, pageId: string) {
   const response = await notion.pages.retrieve({ page_id: pageId });
 
   return response as Page;
-};
+}
 
 export async function getBlocks(notion: Client, pageId: string) {
   const response = await notion.blocks.children.list({
