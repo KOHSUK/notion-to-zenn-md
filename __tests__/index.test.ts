@@ -262,10 +262,10 @@ describe("NotionToZennMarkdown", () => {
     );
     getBlocksMock.mockImplementation(async () => [
       {
-        object: "block" as "block",
+        object: "block" as const,
         id: "d5faa7db-ff82-42df-bf5a-fb1ba4d028f4",
         parent: {
-          type: "page_id" as "page_id",
+          type: "page_id" as const,
           page_id: "2d60a528-4a49-4ba7-b946-11281437ee92",
         },
         created_time: "2023-11-03T06:26:00.000Z",
@@ -280,10 +280,10 @@ describe("NotionToZennMarkdown", () => {
         },
         has_children: false,
         archived: false,
-        type: "image" as "image",
+        type: "image" as const,
         image: {
           caption: [],
-          type: "file" as "file",
+          type: "file" as const,
           file: {
             url: "https://prod-files-secure.s3.us-west-2.amazonaws.com/99999999-9999-9999-9999-999999999999/67e706f9-e8b1-4a87-8011-083181c06d8c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231103T062730Z&X-Amz-Expires=3600&X-Amz-Signature=967b1567a17f4c3cfcf40cd63f0f62bbe85dfabcaa8200e136612e1a8b8aa71e&X-Amz-SignedHeaders=host&x-id=GetObject",
             expiry_time: "2023-11-03T07:27:30.763Z",

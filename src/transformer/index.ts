@@ -1,5 +1,5 @@
 import { NotionToMarkdown } from "notion-to-md";
-import { Bookmark, Callout, Code, Embed, Equation, Image, NotionClient, Toggle } from '../notion';
+import { Bookmark, Callout, Code, Embed, Equation, Image, NotionClient } from '../notion';
 
 export function getTransformer(notion: NotionClient) {
   const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -105,7 +105,7 @@ ${codeString}
 \`\`\``;
   });
 
-  // toggleのcustom transformerはバグで動作しない　https://github.com/souvikinator/notion-to-md/issues/98
+  // toggleのcustom transformerはバグで動作しない https://github.com/souvikinator/notion-to-md/issues/98
   //   // toggle
   //   // https://zenn.dev/zenn/articles/markdown-guide#%E3%82%A2%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA%E3%83%B3%EF%BC%88%E3%83%88%E3%82%B0%E3%83%AB%EF%BC%89
   //   n2m.setCustomTransformer('toggle', async (block) => {
