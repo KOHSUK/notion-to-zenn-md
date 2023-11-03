@@ -12,8 +12,8 @@ type UserWrapper<T extends string, U> = {
   name?: string;
   avatar_url?: string;
 } & {
-    [K in T]?: U;
-  };
+  [K in T]?: U;
+};
 
 type UserType = UserWrapper<
   "person",
@@ -52,8 +52,8 @@ export type PagePropertyWrapper<T extends string, U> = {
   type: T;
   id: string;
 } & {
-    [K in T]: U;
-  };
+  [K in T]: U;
+};
 
 export type CheckBoxProperty = PagePropertyWrapper<"checkbox", boolean>;
 
@@ -76,8 +76,8 @@ type FileWrapper<T extends string, U> = {
   type: T;
   name: string;
 } & {
-    [K in T]: U;
-  };
+  [K in T]: U;
+};
 
 export type FilePropertyValue = FileWrapper<
   "file",
@@ -108,8 +108,8 @@ export type FilesProperty = PagePropertyWrapper<
 type FormulaValue<T extends string, U> = {
   type: T;
 } & {
-    [K in T]: U;
-  };
+  [K in T]: U;
+};
 
 export type FormulaProperty = PagePropertyWrapper<
   "formula",
@@ -238,14 +238,18 @@ type Property =
 type ParentWrapper<T extends string, U> = {
   type: T;
 } & {
-    [K in T]: U;
-  }
+  [K in T]: U;
+};
 
-type DatabaseParent = ParentWrapper<'database_id', string>;
-type PageParent = ParentWrapper<'page_id', string>;
-type WorkspaceParent = ParentWrapper<'workspace', true>;
-type BlockParent = ParentWrapper<'block_id', string>;
-export type Parent = DatabaseParent | PageParent | WorkspaceParent | BlockParent;
+type DatabaseParent = ParentWrapper<"database_id", string>;
+type PageParent = ParentWrapper<"page_id", string>;
+type WorkspaceParent = ParentWrapper<"workspace", true>;
+type BlockParent = ParentWrapper<"block_id", string>;
+export type Parent =
+  | DatabaseParent
+  | PageParent
+  | WorkspaceParent
+  | BlockParent;
 
 export type Page = {
   object: "page";
@@ -257,7 +261,7 @@ export type Page = {
   archived: boolean;
   icon: File | Emoji | null;
   cover: ExternalPropertyValue | null;
-  properties: Record<string, Property>,
+  properties: Record<string, Property>;
   parent: Parent;
   url: string;
   public_url: string | null;
@@ -589,20 +593,25 @@ export type Heading3 = BlockWrapper<
 
 export type FileType = "external" | "file";
 
-export type Image = BlockWrapper<
-  "image",
-  {
-    type: FileType;
-    external: {
-      url: string;
-    };
-    file: {
-      url: string;
-      expiry_time: string;
-    };
-    caption?: RichText[];
-  }
+type ImageWrapper<T extends string, U> = {
+  type: T;
+} & {
+  [K in T]: U;
+} & {
+  caption: RichText[];
+};
+
+export type ExternalImage = ImageWrapper<
+  "external",
+  { url: string; }
 >;
+
+export type FileImage = ImageWrapper<
+  "file",
+  { url: string; expiry_time: string; }
+>;
+
+export type Image = BlockWrapper<"image", ExternalImage | FileImage>;
 
 export type LinkPreview = BlockWrapper<
   "link_preview",

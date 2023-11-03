@@ -23,3 +23,11 @@ export async function getPage(notion: Client, pageId: string) {
 
   return response as Page;
 };
+
+export async function getBlocks(notion: Client, pageId: string) {
+  const response = await notion.blocks.children.list({
+    block_id: pageId,
+  });
+
+  return response.results;
+}

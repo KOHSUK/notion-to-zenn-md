@@ -12,6 +12,7 @@ describe("NotionToZennMarkdown", () => {
   );
 
   const getPageMock = vi.spyOn(notion, "getPage");
+  const getBlocksMock = vi.spyOn(notion, "getBlocks");
 
   beforeAll(() => {
     mockPageToMarkdown.mockImplementation(async () => {
@@ -259,6 +260,37 @@ describe("NotionToZennMarkdown", () => {
           public_url: null,
         } as Page)
     );
+    getBlocksMock.mockImplementation(async () => [
+      {
+        object: "block" as "block",
+        id: "d5faa7db-ff82-42df-bf5a-fb1ba4d028f4",
+        parent: {
+          type: "page_id" as "page_id",
+          page_id: "2d60a528-4a49-4ba7-b946-11281437ee92",
+        },
+        created_time: "2023-11-03T06:26:00.000Z",
+        last_edited_time: "2023-11-03T06:26:00.000Z",
+        created_by: {
+          object: "user",
+          id: "4fbbcffa-e419-47b6-8962-f34e1699ef6d",
+        },
+        last_edited_by: {
+          object: "user",
+          id: "4fbbcffa-e419-47b6-8962-f34e1699ef6d",
+        },
+        has_children: false,
+        archived: false,
+        type: "image" as "image",
+        image: {
+          caption: [],
+          type: "file" as "file",
+          file: {
+            url: "https://prod-files-secure.s3.us-west-2.amazonaws.com/99999999-9999-9999-9999-999999999999/67e706f9-e8b1-4a87-8011-083181c06d8c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231103T062730Z&X-Amz-Expires=3600&X-Amz-Signature=967b1567a17f4c3cfcf40cd63f0f62bbe85dfabcaa8200e136612e1a8b8aa71e&X-Amz-SignedHeaders=host&x-id=GetObject",
+            expiry_time: "2023-11-03T07:27:30.763Z",
+          },
+        },
+      },
+    ]);
   });
 
   describe("generateMd", () => {
@@ -450,7 +482,7 @@ emoji: "🤩"
 type: "tech"
 topics: ["notion"]
 published: true
-published_at: 2023-10-01 22:52
+published_at: 2023-10-01 13:52
 ---`);
     });
 
@@ -529,7 +561,11 @@ Overall, these are just a few of my favorite places to visit. Each destination h
       const imageUrls = await n2zm.listImageUrls("page_id");
 
       expect(imageUrls).toEqual([
-        "https://prod-files-secure.s3.us-west-2.amazonaws.com/87fa912e-5725-43e4-91de-2911f2fd0b15/49c4adce-aafb-47cb-ba90-a4b31e4d5a3e/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=XXXXXXXXXXXXXXXXXXXX%2F20231006%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231006T110453Z&X-Amz-Expires=3600&X-Amz-Signature=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&X-Amz-SignedHeaders=host&x-id=GetObject",
+        {
+          url: "https://prod-files-secure.s3.us-west-2.amazonaws.com/99999999-9999-9999-9999-999999999999/67e706f9-e8b1-4a87-8011-083181c06d8c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20231103%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20231103T062730Z&X-Amz-Expires=3600&X-Amz-Signature=967b1567a17f4c3cfcf40cd63f0f62bbe85dfabcaa8200e136612e1a8b8aa71e&X-Amz-SignedHeaders=host&x-id=GetObject",
+          expiryTime: "2023-11-03T07:27:30.763Z",
+          caption: "",
+        }
       ]);
     });
   });
