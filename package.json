@@ -1,6 +1,6 @@
 {
   "name": "notion-to-zenn-md",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "convert notion pages to Zenn-compatible markdown",
   "homepage": "https://github.com/KOHSUK/notion-to-zenn-md",
   "main": "dist/index.js",
