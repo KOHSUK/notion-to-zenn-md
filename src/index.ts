@@ -237,7 +237,12 @@ export default class NotionToZennMarkdown {
   async listImageUrls(
     pageId: string,
   ): Promise<
-    Array<{ url: string; expiryTime: string | null; caption: string }>
+    Array<{
+      blockId: string;
+      url: string;
+      expiryTime: string | null;
+      caption: string;
+    }>
   > {
     const page = await getBlocks(this.client, pageId);
     const images = page.filter((block) => isImageBlock(block)) as Image[];
