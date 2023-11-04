@@ -248,12 +248,14 @@ export default class NotionToZennMarkdown {
         .join('');
       if (block.image.type === 'external') {
         return {
+          blockId: block.id,
           url: block.image.external.url,
           expiryTime: null,
           caption,
         };
       } else {
         return {
+          blockId: block.id,
           url: block.image.file.url,
           expiryTime: block.image.file.expiry_time,
           caption,
